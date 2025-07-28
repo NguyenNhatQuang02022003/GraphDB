@@ -358,15 +358,24 @@
           <h3>${book.title}</h3>
           <p class="book-author">Tác giả: ${book.author}</p>
           <div class="actions">
-            <button class="edit-btn" onclick="editBook(${book.id})">
+            <button class="edit-btn" onclick="editBook('${book.id}')">
               <span>✏️</span> Sửa
             </button>
-            <button class="delete-btn" onclick="deleteBook(${book.id})">
+            <button class="delete-btn" onclick="deleteBook('${book.id}')">
               <span>🗑️</span> Xóa
             </button>
           </div>
         </div>
       `).join('');
+      
+      // Cuộn đến đầu danh sách sách
+      bookList.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+      
+      showStatus('Đã tải danh sách sách thành công!', 'success');
+
     }
     
     // Thêm/Cập nhật sách
@@ -388,7 +397,7 @@
           // Cập nhật sách
           mutation = `
             mutation {
-              updateBook(id: ${id}, input: {title: "${escapeGraphQLString(title)}", author: "${escapeGraphQLString(author)}"}) {
+              updateBook(id: "${id}", input: {title: "${escapeGraphQLString(title)}", author: "${escapeGraphQLString(author)}"}) {
                 id
                 title
                 author
@@ -440,7 +449,7 @@
       try {
         const mutation = `
           mutation {
-            deleteBook(id: ${id})
+            deleteBook(id: "${id}")
           }
         `;
         
@@ -469,7 +478,7 @@
       try {
         const query = `
           query {
-            getBookById(id: ${id}) {
+            getBookById(id: "${id}") {
               id
               title
               author
